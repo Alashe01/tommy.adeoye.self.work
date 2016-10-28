@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:c="http://www.springframework.org/schema/c"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+
+         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+">
+    <bean id= "orderDao" class="com.mycompany.flooringmaster.dao.FlooringOrderDaoImpl" />
+    <bean id= "ProductDao" class="com.mycompany.flooringmaster.dao.FlooringProductsDaoImpl" />
+    <bean id= "taxDao" class="com.mycompany.flooringmaster.dao.FlooringTaxDaoImpl" />
+    <bean id= "floorConsole" class="com.mycompany.consoleio.ConsoleIO " />
+    
+    <bean id= "AuditAspect" class="com.mycompany.flooringmastery.aop.AuditAspectDao" />
+    
+    <bean id="flooringController" class="com.mycompany.flooringmastery.controller.FlooringMasterController">
+        <constructor-arg ref="orderDao" />
+        <constructor-arg ref="ProductDao" /> 
+        <constructor-arg ref="taxDao" /> 
+        <constructor-arg ref="floorConsole" />
+    </bean>
+    
+    <aop:config>
+    
+    <aop:aspect ref="AuditAspect">
+    <aop:around 
+                method="add"
+                pointcut="execution (* com.mycompany.studentroster.dao.StudentDao.add(..))"
+    />   
+    
+    </aop:aspect> 
+    
+    </aop:config>
+</beans>
